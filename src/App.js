@@ -5,12 +5,15 @@ import Home from "./components/Home";
 import About from "./components/About";
 import Products from "./components/Products";
 import Main from "./components/Main";
+import ErrorPage from "./components/ErrorPage";
+import MealDetails from "./components/MealDetails";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Main></Main>,
+      errorElement: <ErrorPage />,
       children: [
         { path: "/", element: <Home></Home> },
         { path: "/home", element: <Home></Home> },
@@ -19,7 +22,15 @@ function App() {
           path: "/products",
           element: <Products></Products>,
           loader: () =>
-            fetch("https://www.themealdb.com/api/json/v1/1/categories.php"),
+            fetch("https://www.themealdb.com/api/json/v1/1/search.php?s"),
+        },
+        {
+          path: "meal/:strMeal",
+          element: <MealDetails></MealDetails>,
+          loader: ({ params }) =>
+            fetch(
+              `www.themealdb.com/api/json/v1/1/search.php?s=${params.strMeal}`
+            ),
         },
       ],
     },
